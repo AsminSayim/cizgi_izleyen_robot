@@ -1,0 +1,195 @@
+https://maker.robotistan.com/cizgi-izleyen-robot-2/
+Çizgi İzleyen Robot Malzemeler
+Arduino Uno
+Çok Amaçlı Robot Platformu 
+L298N Voltaj Regulatörlü Çift Motor Sürücü Kartı
+4’lü Çizgi İzleyen Sensör Seti
+Pil 
+6’lı AA Pil Yuvası
+Jumper
+https://robotrak.trakya.edu.tr/pages/cizgi-izleyen-robot
+Çizgi İzleyen Robot Yapımı ve Teknik Bilgiler Çizgi İzleyen Robot Yapımı ve Teknik Bilgiler
+
+Çizgi izleyen robot projelerini incelemek için tıklayınız.
+
+http://www.robotiksistem.com/cizgi_izleyen_robot_projeleri.html
+
+
+Kullanılan Malzemeler: 1 Adet Delikli Pertinaks 5*7 cm, 1 Adet Voltaj Regülatörü ( L7809CV), 1 Adet LED 1 Adet 220 Ohm Direnç, 1 Adet Açma-Kapama Switchi, 1 Adet 4007 Diyot, 3 Adet 3.5 mm Terminal Konnektör, 2 Pin, 1 Adet Arduino Nano, 1 Adet TB6612FNG Motor Sürücü Kartı, 2 Boy Dişi Header, 1 Boy Erkek Header
+https://www.teknolojikogretmenler.com/cizgi-izleyen-robot-projesi/
+
+https://roboturka.com/arduino/cizgi-izleyen-robot-yapimi/
+
+int sol_s = 2, ort_s = 3, sag_s = 4; //sensör pinleri
+
+int sol_g = 9; //motor pinleri
+int sol_i = 8;
+int sag_g = 11; //eğer motor dönüş yönünde problem
+int sag_i = 12; //yaşıyorsanız bunu pinlerin yerini
+//değiştirerek çözebilirsiniz
+
+int dur2, dur3, dur4; //sensörden okunacak değerlerin
+//atanacağı değişkenler
+void setup()
+{
+pinMode(2, OUTPUT);
+pinMode(3, OUTPUT);
+pinMode(4, OUTPUT); //motor pimleri çıkış olarak ayrkanır
+pinMode(5, OUTPUT);
+
+pinMode(2, INPUT);
+pinMode(3, INPUT); //sensör pinleri giriş olarak ayarlanır
+pinMode(4, INPUT);
+}
+
+void loop()
+{
+dur2 = digitalRead(sol_s);
+dur3 = digitalRead(sag_s); //sensörlerden gelen bilgiler
+dur4 = digitalRead(ort_s); //okundu ve değişkenlere atandı
+if (dur3 == HIGH)
+{
+
+digitalWrite(sol_i, HIGH);
+digitalWrite(sol_g, LOW); //eğer ortadaki sensörden bilgi
+digitalWrite(sag_i, HIGH); //geliyorsa robot düz gidecek
+digitalWrite(sag_g, LOW);
+
+}
+
+else if (dur2 == HIGH)
+{
+digitalWrite(sol_i, LOW);
+digitalWrite(sol_g, LOW); //eğer sol sensörden bilgi
+digitalWrite(sag_i, HIGH); //geliyorsa robot sağa dönecek
+digitalWrite(sag_g, LOW);
+
+}
+
+else if (dur4 == HIGH)
+{
+digitalWrite(sol_i, HIGH);
+digitalWrite(sol_g, LOW); //eğer sağ sensörden bilgi
+digitalWrite(sag_i, LOW); //geliyorsa robot sola dönecek
+digitalWrite(sag_g, LOW);
+
+}
+}
+
+Gerekli Malzemeler:
+
+· Arduino Uno 
+
+· USB Kablo
+
+· L298N Motor Sürücü Modülü
+
+· 3'lü CNY70 Sensör Modülü
+
+· 4x DC Motor
+
+· 4x Geçmeli Tekerlek
+
+· Robot Gövdesi
+
+· 8x M3 Vida ve Somun
+
+· 5x Dişi-Erkek Jumper Kablo
+
+#define enA 5
+#define enB 6
+#define in1 7
+#define in2 8
+#define in3 9
+#define in4 10
+
+#define sol 2
+#define orta 3
+#define sag 4
+
+int sag_s = 0;
+int orta_s = 0;
+int sol_s = 0;
+
+void setup() 
+{
+  Serial.begin(9600);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(2, INPUT);
+  pinMode(3, INPUT);
+  pinMode(4, INPUT);
+}
+
+void loop() {
+  sag_s = digitalRead(sag);
+  Serial.print("Sağ Sensor: ");
+  Serial.println(sag_s);
+  orta_s = digitalRead(orta);
+  Serial.print("Orta Sensor: ");
+  Serial.println(orta_s);  
+  sol_s = digitalRead(sol);
+  Serial.print("Sol Sensor: ");
+  Serial.println(sol_s);  
+  delay(1000);
+ if(sag_s==0 && orta_s==0 && sol_s==0)
+  {
+    ileri();
+  }
+    if(sag_s==0 && orta_s ==1 && sol_s==0)
+  {
+    ileri();
+  }
+    if(sag_s==0 && orta_s==1 && sol_s==1)
+  {
+   soldon();
+  }
+    if(sag_s==0 && orta_s==0 && sol_s==1)
+  {
+   soldon();
+  } 
+    if(sag_s==1 && orta_s ==1 && sol_s==0)
+  {
+   sagdon();
+  }
+    if(sag_s==1 && orta_s==0 && sol_s==0)
+  {
+   sagdon();
+  } 
+   
+}
+void ileri()
+{
+  analogWrite(enA, 200);
+  digitalWrite(in1, 0);
+  digitalWrite(in2, 1);
+
+  analogWrite(enB, 200);
+  digitalWrite(in3, 0);
+  digitalWrite(in4, 1);
+}
+
+void soldon()
+{
+  analogWrite(enA, 200);
+  digitalWrite(in1, 0);
+  digitalWrite(in2, 1);
+
+  analogWrite(enB, 200);
+  digitalWrite(in3, 0);
+  digitalWrite(in4, 0);  
+}
+void sagdon()
+{
+  analogWrite(enA, 200);
+  digitalWrite(in1, 0);
+  digitalWrite(in2, 0);
+
+  analogWrite(enB, 200);
+  digitalWrite(in3, 0);
+  digitalWrite(in4, 1 );  
+}
